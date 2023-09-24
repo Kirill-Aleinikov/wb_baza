@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Данные</title>
+    <style>
+        /* Общие стили */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f8f8;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Заголовки */
+        h1 {
+            font-size: 24px;
+            color: #333;
+        }
+
+        /* Сильное выделение текста */
+        strong {
+            font-weight: bold;
+        }
+
+        /* Стили для блоков данных */
+        h1, ul {
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        li {
+            margin-bottom: 5px;
+        }
+
+        /* Стили для списка товаров */
+        li strong {
+            display: inline-block;
+            width: 120px;
+            font-weight: bold;
+        }
+
+        /* Стили для ссылок */
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        /* Цветовая палитра Wildberries */
+        body {
+            background-color: #f8f8f8;
+        }
+
+        .container {
+            background-color: #fff;
+        }
+
+        h1, strong, li strong {
+            color: #333;
+        }
+
+        ul, li {
+            color: #666;
+        }
+
+        button {
+            background-color: #ff6600;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            text-transform: uppercase;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #ff9900;
+        }
+
+        /* Скрываемые блоки */
+        .hidden {
+            display: none;
+            opacity: 0;
+            transition: display 0s, opacity 0.5s;
+        }
+
+        /* Анимация появления */
+        .fade-in {
+            display: block;
+            opacity: 1;
+            transition: opacity 0.5s;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Данные:</h1>
+        <p><strong>Order UID:</strong> {{ .OrderUID }}</p>
+        <p><strong>Track Number:</strong> {{ .TrackNumber }}</p>
+        <p><strong>Entry:</strong> {{ .Entry }}</p>
+        
+        <h1 class="toggle" onclick="toggleSection('deliverySection')">Delivery:</h1>
+        <ul id="deliverySection" class="hidden">
+            <li><strong>Name:</strong> {{ .Delivery.Name }}</li>
+            <li><strong>Phone:</strong> {{ .Delivery.Phone }}</li>
+            <li><strong>Zip:</strong> {{ .Delivery.Zip }}</li>
+            <li><strong>City:</strong> {{ .Delivery.City }}</li>
+            <li><strong>Address:</strong> {{ .Delivery.Address }}</li>
+            <li><strong>Region:</strong> {{ .Delivery.Region }}</li>
+            <li><strong>Email:</strong> {{ .Delivery.Email }}</li>
+        </ul>
+
+        <h1 class="toggle" onclick="toggleSection('paymentSection')">Payment:</h1>
+        <ul id="paymentSection" class="hidden">
+            <li><strong>Transaction:</strong> {{ .Payment.Transaction }}</li>
+            <li><strong>Request ID:</strong> {{ .Payment.RequestID }}</li>
+            <li><strong>Currency:</strong> {{ .Payment.Currency }}</li>
+            <li><strong>Provider:</strong> {{ .Payment.Provider }}</li>
+            <li><strong>Amount:</strong> {{ .Payment.Amount }}</li>
+            <li><strong>Payment DT:</strong> {{ .Payment.PaymentDT }}</li>
+            <li><strong>Bank:</strong> {{ .Payment.Bank }}</li>
+            <li><strong>Delivery Cost:</strong> {{ .Payment.DeliveryCost }}</li>
+            <li><strong>Goods Total:</strong> {{ .Payment.GoodsTotal }}</li>
+            <li><strong>Custom Fee:</strong> {{ .Payment.CustomFee }}</li>
+        </ul>
+
+        <h1 class="toggle" onclick="toggleSection('itemsSection')">Items:</h1>
+        <ul id="itemsSection" class="hidden">
+            {{ range .Items }}
+            <li><strong>Chrt ID:</strong> {{ .ChrtID }}</li>
+            <li><strong>Track Number:</strong> {{ .TrackNumber }}</li>
+            <li><strong>Price:</strong> {{ .Price }}</li>
+            <li><strong>RID:</strong> {{ .RID }}</li>
+            <li><strong>Name:</strong> {{ .Name }}</li>
+            <li><strong>Sale:</strong> {{ .Sale }}</li>
+            <li><strong>Size:</strong> {{ .Size }}</li>
+            <li><strong>Total Price:</strong> {{ .TotalPrice }}</li>
+            <li> <strong>NMID:</strong> {{ .NMID }}</li>
+            <li> <strong>Brand:</strong> {{ .Brand }}</li>
+            <li><strong>Status:</strong> {{ .Status }}</li>
+            {{ end }}
+        </ul>
+
+        <button class="button" onclick="toggleAllSections()">Подробнее</button>
+    </div>
+
+    <script>
+        function toggleSection(sectionId) {
+            var section = document.getElementById(sectionId);
+            if (section.style.display === "none" || section.style.display === "") {
+                section.style.display = "block";
+                setTimeout(function() {
+                    section.classList.add("fade-in");
+                }, 10);
+            } else {
+                section.style.display = "none";
+                section.classList.remove("fade-in");
+            }
+        }
+
+        function toggleAllSections() {
+            var sections = document.querySelectorAll(".toggle");
+            sections.forEach(function(section) {
+                var sectionId = section.getAttribute("onclick").split("'")[1];
+                toggleSection(sectionId);
+            });
+        }
+    </script>
+</body>
+</html>
